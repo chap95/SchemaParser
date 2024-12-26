@@ -7,15 +7,18 @@ function extractGraphOrType(data) {
       data["@graph"].forEach((graphData) => {
         results.push(...extractGraphOrType(graphData));
       });
+      return results;
     }
     if ("@type" in data) {
       results.push({ "@type": data["@type"] });
+      return results;
     }
 
     // 객체 내부를 재귀적으로 탐색
     for (const key in data) {
       results.push(...extractGraphOrType(data[key]));
     }
+    return results;
   }
 
   // 배열일 경우 각 요소를 탐색
@@ -28,7 +31,17 @@ function extractGraphOrType(data) {
   return results;
 }
 
+function addToMap(map, value) {
+  if (!map[value]) {
+    map[value] = 1;
+  } else {
+    map[value]++;
+  }
+}
+
 (function handleScriptParse() {
+  const typeList = [];
+
   document
     .querySelectorAll('script[type="application/ld+json"]')
     .forEach((script) => {
@@ -43,30 +56,23 @@ function extractGraphOrType(data) {
         if (json) {
           const dataMapList = extractGraphOrType(json);
           const typeCountMap = {};
-          console.log(dataMapList);
 
           dataMapList.forEach((dataMap) => {
-            const value = dataMap["@type"];
+            const typeNameData = dataMap["@type"];
 
-            if (Array.isArray(value)) {
-              value.forEach((data) => {
-                if (!typeCountMap[data]) {
-                  typeCountMap[data] = 1;
-                } else {
-                  typeCountMap[data]++;
-                }
+            if (Array.isArray(typeNameData)) {
+              typeNameData.forEach((typeName) => {
+                addToMap(typeCountMap, typeName);
               });
-            }
-
-            if (!typeCountMap[value]) {
-              typeCountMap[value] = 1;
             } else {
-              typeCountMap[value]++;
+              addToMap(typeCountMap, typeNameData);
             }
           });
 
-          console.log(typeCountMap);
+          typeList.push(typeCountMap);
         }
       }
     });
+
+  console.log(typeList);
 })();
