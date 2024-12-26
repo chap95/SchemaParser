@@ -1,7 +1,6 @@
 function extractGraphOrType(data) {
   const results = [];
 
-  // 객체일 경우 탐색
   if (typeof data === "object" && data !== null) {
     if ("@graph" in data) {
       data["@graph"].forEach((graphData) => {
@@ -14,14 +13,12 @@ function extractGraphOrType(data) {
       return results;
     }
 
-    // 객체 내부를 재귀적으로 탐색
     for (const key in data) {
       results.push(...extractGraphOrType(data[key]));
     }
     return results;
   }
 
-  // 배열일 경우 각 요소를 탐색
   if (Array.isArray(data)) {
     data.forEach((item) => {
       results.push(...extractGraphOrType(item));
