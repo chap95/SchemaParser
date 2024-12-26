@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style rel="stylesheets">
+      body {
+        width: 250px;
+        height: 120px;
+        background-color: black;
+        color: white;
+        padding: 20px;
+      }
+
+      .greeting {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .text {
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      #chrome-extension-schema-start-button {
+        width: 80px;
+        height: 30px;
+        background-color: gainsboro;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: black;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: ease-in;
+      }
+
+      #chrome-extension-schema-start-button:hover {
+        background-color: lightskyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="greeting">
+        <h1>Welcome to Schema Checker</h1>
+
+        <p class="text">click the button start to check Schema</p>
+
+        <div id="chrome-extension-schema-start-button">START</div>
+      </div>
+    </main>
+  </body>
+
+  <script src="popup.js"></script>
+</html>
