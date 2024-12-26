@@ -4,8 +4,58 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+
+    <style>
+      body {
+        background-color: black;
+        color: white;
+      }
+
+      .result-box {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        padding: 5px;
+        border: "1px solid white";
+        border-radius: 10px;
+      }
+
+      .result-type {
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .result-type-info {
+        font-size: 13px;
+        font-weight: 400;
+        color: lightskyblue !important;
+      }
+
+      #chrome-extension-schema-start-button {
+        background-color: gainsboro;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: black;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: ease-in;
+        margin-top: 20px;
+        padding: 10px 20px 10px 20px;
+      }
+
+      #chrome-extension-schema-start-button:hover {
+        background-color: lightskyblue;
+      }
+    </style>
   </head>
   <body>
-    <h1>first panel</h1>
+    <p id="title">Click start button for parse schema</p>
+    <div id="result-box"></div>
+    <div id="chrome-extension-schema-start-button">START</div>
+    <script src="panel.js"></script>
   </body>
 </html>

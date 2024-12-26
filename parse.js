@@ -74,5 +74,6 @@ function addToMap(map, value) {
       }
     });
 
-  console.log(typeList);
+  const action = typeList.length > 0 ? "sendResult" : "emptyResult";
+  chrome.runtime.sendMessage({ action, typeList });
 })();
