@@ -6,23 +6,32 @@ function extractGraphOrType(data) {
       data["@graph"].forEach((graphData) => {
         results.push(...extractGraphOrType(graphData));
       });
-      return results;
     }
-    if ("@type" in data) {
-      results.push({ "@type": data["@type"] });
-      return results;
-    }
+
+    let currentType;
 
     for (const key in data) {
-      results.push(...extractGraphOrType(data[key]));
-    }
-    return results;
-  }
+      if (key === "@id") {
+        continue;
+      }
 
-  if (Array.isArray(data)) {
-    data.forEach((item) => {
-      results.push(...extractGraphOrType(item));
-    });
+      if (key === "@type") {
+        currentType = data[key];
+
+        results.push({ [currentType]: [] });
+        continue;
+      }
+
+      if (currentType) {
+        results.forEach((result) => {
+          if (result[currentType]) {
+            result[currentType].push(key);
+          }
+        });
+      }
+    }
+
+    return results;
   }
 
   return results;
@@ -51,22 +60,7 @@ function addToMap(map, value) {
         }
 
         if (json) {
-          const dataMapList = extractGraphOrType(json);
-          const typeCountMap = {};
-
-          dataMapList.forEach((dataMap) => {
-            const typeNameData = dataMap["@type"];
-
-            if (Array.isArray(typeNameData)) {
-              typeNameData.forEach((typeName) => {
-                addToMap(typeCountMap, typeName);
-              });
-            } else {
-              addToMap(typeCountMap, typeNameData);
-            }
-          });
-
-          typeList.push(typeCountMap);
+          typeList.push(extractGraphOrType(json));
         }
       }
     });

@@ -1,8 +1,5 @@
-function generateResultText(type) {
-  return `<div class="result-box">
-    <p class="result-type">${type}</p>
-    <a class="result-type-info" href="https://schema.org/${type}">more info</a>
-  </div>`;
+function generateMoreInfoHref(type) {
+  return `<a href="https://schema.org/${type}" class="result-type-info">more info</a>`;
 }
 
 function handleMoreInfoClick(event) {
@@ -26,9 +23,34 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       content = "";
     }
 
-    typeList.forEach((types) => {
-      Object.keys(types).forEach((type) => {
-        content += generateResultText(type);
+    typeList.forEach((typePropertiesMapList) => {
+      typePropertiesMapList.forEach((typePropertiesMap) => {
+        Object.entries(typePropertiesMap).forEach(([type, properties]) => {
+          content += `<div class="result-box">
+            <p class="result-type">${type}</p>
+              <div>
+              ${properties
+                .map((property) => {
+                  return `<p class="result-property">${property}</p>`;
+                })
+                .join("")}
+              </div>
+            <div class="hr"></div>
+            <div class="more-info-box">
+              ${
+                type.includes(",")
+                  ? type
+                      .split(",")
+                      .map(
+                        (value) => `${value} : ${generateMoreInfoHref(value)}`
+                      )
+                      .join("")
+                  : generateMoreInfoHref(type)
+              }
+            </div>
+           
+          </div>`;
+        });
       });
     });
 
@@ -43,7 +65,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 const handleClick = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    console.log("### parse");
     if (tabs.length > 0) {
       // Background Script로 메시지 전송
       chrome.runtime.sendMessage({
