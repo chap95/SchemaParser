@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (action === "emptyResult") {
     document.getElementById("result-box").innerHTML =
-      "There is no Schema detected";
+      "Sorry, No schema detected.";
   }
 
   if (action === "sendResult") {
@@ -57,7 +57,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     document.getElementById("result-box").innerHTML = content;
     window.addEventListener("click", handleMoreInfoClick);
 
-    document.getElementById("title").innerText = "Result";
+    document.getElementById("title").innerText = "RESULT";
     document.getElementById("chrome-extension-schema-start-button").innerText =
       "regenerate";
   }
